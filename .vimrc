@@ -238,6 +238,7 @@ NeoBundle 'othree/html5.vim'
 NeoBundle 'mattn/flappyvird-vim'
 NeoBundle 'tpope/vim-surround'
 NeoBundle 'spolu/dwm.vim'
+NeoBundle 'tomtom/tcomment_vim'
 
 ""NeoBundle 'https://bitbucket.org/kovisoft/slimv'
 
@@ -350,6 +351,7 @@ inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
 inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
 inoremap <expr><C-y>  neocomplete#close_popup()
 inoremap <expr><C-e>  neocomplete#cancel_popup()
+inoremap <expr><C-Space>  neocomplete#close_popup()
 " Close popup by <Space>.
 "inoremap <expr><Space> pumvisible() ? neocomplete#close_popup() : "\<Space>"
 
