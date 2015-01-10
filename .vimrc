@@ -26,6 +26,7 @@ set smartcase        "検索時、文字の大小が混在する場合は区別�
 set backspace=indent,eol,start   "BSでインデントや改行を削除
 set wildmenu         "コマンドライン補完
 set formatoptions+=mM "折り返しの日本語対応
+set clipboard=unnamed  "copy to clipboard yank characters
 
 "show cursorline only current window{"
 augroup cch
