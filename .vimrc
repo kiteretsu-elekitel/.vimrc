@@ -27,6 +27,7 @@ set backspace=indent,eol,start   "BSでインデントや改行を削除
 set wildmenu         "コマンドライン補完
 set formatoptions+=mM "折り返しの日本語対応
 set clipboard=unnamed  "copy to clipboard yank characters
+set imdisable       "disable auto IM switch"
 
 "show cursorline only current window{"
 augroup cch
@@ -240,6 +241,8 @@ NeoBundle 'mattn/flappyvird-vim'
 NeoBundle 'tpope/vim-surround'
 NeoBundle 'spolu/dwm.vim'
 NeoBundle 'tomtom/tcomment_vim'
+NeoBundle 'lilydjwg/colorizer'
+
 
 ""NeoBundle 'https://bitbucket.org/kovisoft/slimv'
 
