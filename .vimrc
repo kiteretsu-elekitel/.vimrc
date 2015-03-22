@@ -28,6 +28,8 @@ set wildmenu         "コマンドライン補完
 set formatoptions+=mM "折り返しの日本語対応
 set clipboard=unnamed  "copy to clipboard yank characters
 set imdisable       "disable auto IM switch"
+let &t_ti .= "\e[22;0t"
+let &t_te .= "\e[23;0t"
 
 "show cursorline only current window{"
 augroup cch
