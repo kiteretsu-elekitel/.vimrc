@@ -28,9 +28,13 @@ set wildmenu         "コマンドライン補完
 set formatoptions+=mM "折り返しの日本語対応
 set clipboard=unnamed  "copy to clipboard yank characters
 set imdisable       "disable auto IM switch"
+"preventin of printing "thank you for flyng vim""
 let &t_ti .= "\e[22;0t"
 let &t_te .= "\e[23;0t"
 
+
+"for crontab
+let &backupskip="/private/tmp/*," . &backupskip
 "show cursorline only current window{"
 augroup cch
 autocmd! cch
@@ -45,7 +49,7 @@ highlight CursorLine ctermbg=black guibg=black
 
 
 "colorscheme setteing"
-colorscheme solarized
+colorscheme hybrid
 set background=dark
 
 "keyMapping for plugins"
@@ -109,8 +113,10 @@ set showcmd     "入力中のコマンドを表示
 set hlsearch    "検索結果をハイライト表示
 set incsearch   "インクリメンタルサーチ有効
 
-
-
+"------------------------
+"template setting
+"------------------------
+autocmd BufNewFile *.plist 0r $HOME/.vim/template/plist.txt
 
 
 
@@ -221,31 +227,35 @@ if has('vim_starting')
   set runtimepath+=~/.vim/bundle/neobundle.vim
   call neobundle#begin(expand('~/.vim/bundle/'))
   NeoBundleFetch 'Shougo/neobundle.vim'
+" originalrepos on github
+  NeoBundle 'Shougo/neobundle.vim'
+  NeoBundle 'Shougo/vimproc'
+  NeoBundle 'VimClojure'
+  NeoBundle 'Shougo/vimshell'
+  NeoBundle 'Shougo/unite.vim'
+  NeoBundle 'Shougo/neocomplete'
+  NeoBundle 'Shougo/neosnippet'
+  NeoBundle 'Shougo/neosnippet-snippets'
+  NeoBundle 'jpalardy/vim-slime'
+  NeoBundle 'scrooloose/syntastic'
+  NeoBundle 'Townk/vim-autoclose'
+  NeoBundle 'w0ng/vim-hybrid'
+  NeoBundle 'Shougo/neomru.vim'
+  NeoBundle 'kakkyz81/evervim'
+  NeoBundle 'othree/html5.vim'
+  NeoBundle 'mattn/flappyvird-vim'
+  NeoBundle 'tpope/vim-surround'
+  NeoBundle 'spolu/dwm.vim'
+  NeoBundle 'tomtom/tcomment_vim'
+  NeoBundle 'lilydjwg/colorizer'
+  NeoBundle 'scrooloose/syntastic'
+  NeoBundle 'junegunn/vim-easy-align'
+  NeoBundle 'rking/ag.vim'
+  NeoBundle 'Shougo/vimfiler'
+  NeoBundle 'scrooloose/nerdtree'  "ファイルのツリー表示（:NERDTreeで表示
+
   call neobundle#end()
 endif
-" originalrepos on github
-NeoBundle 'Shougo/neobundle.vim'
-NeoBundle 'Shougo/vimproc'
-NeoBundle 'VimClojure'
-NeoBundle 'Shougo/vimshell'
-NeoBundle 'Shougo/unite.vim'
-NeoBundle 'Shougo/neocomplete'
-NeoBundle 'Shougo/neosnippet'
-NeoBundle 'Shougo/neosnippet-snippets'
-NeoBundle 'jpalardy/vim-slime'
-NeoBundle 'scrooloose/syntastic'
-NeoBundle 'Townk/vim-autoclose'
-NeoBundle 'w0ng/vim-hybrid'
-NeoBundle 'Shougo/neomru.vim'
-NeoBundle 'kakkyz81/evervim'
-NeoBundle 'othree/html5.vim'
-NeoBundle 'mattn/flappyvird-vim'
-NeoBundle 'tpope/vim-surround'
-NeoBundle 'spolu/dwm.vim'
-NeoBundle 'tomtom/tcomment_vim'
-NeoBundle 'lilydjwg/colorizer'
-
-
 ""NeoBundle 'https://bitbucket.org/kovisoft/slimv'
 
 filetype plugin indent on     " required!
@@ -253,7 +263,6 @@ filetype indent on
 
 
 "追加プラグイン
-NeoBundle 'scrooloose/nerdtree'  "ファイルのツリー表示（:NERDTreeで表示
 
 
 
@@ -279,6 +288,20 @@ let g:unite_source_history_yank_enable = 1
 au FileType unite nnoremap <silent> <buffer> <ESC><ESC> :q<CR>
 au FileType unite inoremap <silent> <buffer> <ESC><ESC> <ESC>:q<CR>
 
+
+
+" カーソル位置の単語をgrep検索
+nnoremap <silent> ,cg :<C-u>Unite grep:. -buffer-name=search-buffer<CR><C-R><C-W>
+
+" unite grep に ag(The Silver Searcher) を使う
+if executable('ag')
+  let g:unite_source_grep_command = 'ag'
+  let g:unite_source_grep_default_opts = '--nogroup --nocolor --column'
+  let g:unite_source_grep_recursive_opt = ''
+endif
+
+
+
 "------------------------------------
 "unite Key mappings"
 "------------------------------------
@@ -292,6 +315,8 @@ nmap <silent> [unite]f   :<C-u>Unite file<CR>
 nmap <silent> [unite]d   :<C-u>Unite directory<CR>
 nmap <silent> [unite]r   :<C-u>Unite register<CR>
 nmap <silent> [unite]c   :<C-u>Unite -default-action=lcd directory_mru<CR>
+
+
 
 "-------------------------------------
 "EverVim settings
@@ -418,3 +443,60 @@ nmap <c-l> <Plug>DWMGrowMaster
 nmap <c-h> <Plug>DWMShrinkMaster
 
 let g:dwm_master_pane_width="66%"
+
+
+
+"------------------------------------
+"easy alien
+"------------------------------------
+vnoremap <silent> <Enter> :EasyAlign<cr>
+
+
+
+"------------------------------------
+"tab setting
+"------------------------------------
+" Anywhere SID.
+function! s:SID_PREFIX()
+  return matchstr(expand('<sfile>'), '<SNR>\d\+_\zeSID_PREFIX$')
+endfunction
+
+" Set tabline.
+function! s:my_tabline()  "{{{
+  let s = ''
+  for i in range(1, tabpagenr('$'))
+    let bufnrs = tabpagebuflist(i)
+    let bufnr = bufnrs[tabpagewinnr(i) - 1]  " first window, first appears
+    let no = i  " display 0-origin tabpagenr.
+    let mod = getbufvar(bufnr, '&modified') ? '!' : ' '
+    let title = fnamemodify(bufname(bufnr), ':t')
+    let title = '[' . title . ']'
+    let s .= '%'.i.'T'
+    let s .= '%#' . (i == tabpagenr() ? 'TabLineSel' : 'TabLine') . '#'
+    let s .= no . ':' . title
+    let s .= mod
+    let s .= '%#TabLineFill# '
+  endfor
+  let s .= '%#TabLineFill#%T%=%#TabLine#'
+  return s
+endfunction "}}}
+let &tabline = '%!'. s:SID_PREFIX() . 'my_tabline()'
+set showtabline=2 " 常にタブラインを表示
+
+" The prefix key.
+nnoremap    [Tag]   <Nop>
+nmap    t [Tag]
+" Tab jump
+for n in range(1, 9)
+  execute 'nnoremap <silent> [Tag]'.n  ':<C-u>tabnext'.n.'<CR>'
+endfor
+" t1 で1番左のタブ、t2 で1番左から2番目のタブにジャンプ
+
+map <silent> [Tag]c :tablast <bar> tabnew<CR>
+" tc 新しいタブを一番右に作る
+map <silent> [Tag]x :tabclose<CR>
+" tx タブを閉じる
+map <silent> [Tag]n :tabnext<CR>
+" tn 次のタブ
+map <silent> [Tag]p :tabprevious<CR>
+" tp 前のタブ
