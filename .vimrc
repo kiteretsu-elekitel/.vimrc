@@ -7,7 +7,7 @@ set number
 set tabstop=4
 set shiftwidth=4
 set softtabstop=4
-set expandtab        "タブをスペースに変更
+"set expandtab        "タブをスペースに変更
 "if don't input bigcase, don't Know which bigcase and smallcase
 set smartcase
 syntax on
@@ -91,6 +91,7 @@ let java_highlight_functions=1 "メソッドの宣言文とブレースのハイ
 "ファイルの出力先を指定
 set directory=~/.vim/tmp    "スワップファイルの出力先
 set backupdir=~/.vim/tmp    "バックアップファイルの出力先
+set undodir=~/.vim/tmp
 
 "スクロールの余白確保
 set scrolloff=5
@@ -238,7 +239,6 @@ if has('vim_starting')
   NeoBundle 'Shougo/neosnippet-snippets'
   NeoBundle 'jpalardy/vim-slime'
   NeoBundle 'scrooloose/syntastic'
-  NeoBundle 'Townk/vim-autoclose'
   NeoBundle 'w0ng/vim-hybrid'
   NeoBundle 'Shougo/neomru.vim'
   NeoBundle 'kakkyz81/evervim'
@@ -253,6 +253,7 @@ if has('vim_starting')
   NeoBundle 'rking/ag.vim'
   NeoBundle 'Shougo/vimfiler'
   NeoBundle 'scrooloose/nerdtree'  "ファイルのツリー表示（:NERDTreeで表示
+  NeoBundle 'itchyny/lightline.vim'
 
   call neobundle#end()
 endif
